@@ -6,7 +6,6 @@ import 'package:flutter_node_store/models/product_model.dart';
 import 'package:flutter_node_store/screens/bottomnavpage/home_screen.dart';
 import 'package:flutter_node_store/screens/products/components/product_form.dart';
 import 'package:flutter_node_store/services/rest_api.dart';
-import 'package:flutter_node_store/utils/utility.dart';
 
 class ProductAdd extends StatefulWidget {
   const ProductAdd({super.key});
