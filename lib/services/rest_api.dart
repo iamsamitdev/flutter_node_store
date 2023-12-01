@@ -90,4 +90,44 @@ class CallAPI {
   }
   // ---------------------------------------------------------------------------
 
+  // Delete Product API Method -------------------------------------------------
+  Future<String> deleteProductAPI(int id) async {
+    final response = await _dioWithAuth.delete('products/$id');
+    if(response.statusCode == 200){
+      Utility().logger.d(response.data);
+      return jsonEncode(response.data);
+    }
+    throw Exception('Failed to delete product');
+  }
+  // ---------------------------------------------------------------------------
+
+  // Update Product API Method -------------------------------------------------
+  Future<String> updateProductAPI(ProductModel product, {File? imageFile}) async {
+
+    FormData data = FormData.fromMap(
+      {
+        'name': product.name,
+        'description': product.description,
+        'barcode': product.barcode,
+        'stock': product.stock,
+        'price': product.price,
+        'category_id': product.categoryId,
+        'user_id': product.userId,
+        'status_id': product.statusId,
+        if (imageFile != null)
+        'photo': await MultipartFile.fromFile(
+          imageFile.path,
+          contentType: MediaType('image', 'jpg'),
+        ),
+      });
+
+      final response = await _dioWithAuth.put('products/${product.id}', data: data);
+      if(response.statusCode == 200){
+        Utility().logger.d(response.data);
+        return jsonEncode(response.data);
+      }
+      throw Exception('Failed to update product');
+  }
+  // ---------------------------------------------------------------------------
+
 }
