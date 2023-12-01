@@ -1,8 +1,10 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter_node_store/models/product_model.dart';
 import 'package:flutter_node_store/services/dio_config.dart';
 import 'package:flutter_node_store/utils/utility.dart';
+import 'package:http_parser/http_parser.dart';
 
 class CallAPI {
   // สร้าง Dio Instance
@@ -60,5 +62,32 @@ class CallAPI {
     throw Exception('Failed to load products');
   }
   // ---------------------------------------------------------------------------
-  
+
+  // Create Product API Method -------------------------------------------------
+  Future<String> addProductAPI(ProductModel product, {File? imageFile}) async {
+    FormData data = FormData.fromMap({
+      'name': product.name,
+      'description': product.description,
+      'barcode': product.barcode,
+      'stock': product.stock,
+      'price': product.price,
+      'category_id': product.categoryId,
+      'user_id': product.userId,
+      'status_id': product.statusId,
+      if (imageFile != null)
+        'photo': await MultipartFile.fromFile(
+          imageFile.path,
+          contentType: MediaType('image', 'jpg'),
+        ),
+    });
+
+    final response = await _dioWithAuth.post('products', data: data);
+    if (response.statusCode == 200) {
+      Utility().logger.d(response.data);
+      return jsonEncode(response.data);
+    }
+    throw Exception('Failed to create product');
+  }
+  // ---------------------------------------------------------------------------
+
 }

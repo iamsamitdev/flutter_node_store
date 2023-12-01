@@ -1666,3 +1666,98 @@ Section 11: จัดการ State และ Route ด้วย GetX
 -------------------------------------------------------
 Section 8: Workshop CRUD ข้อมูลสินค้าจาก NodeJS API (ต่อ)
 
+Step 1: ติดตั้ง package (lib) สำหรับการ upload / crop file ภาพและ http_parser
+---
+  # http parser
+  http_parser: ^4.0.2
+
+  # Image Picker
+  image_picker: ^1.0.1
+
+  # Image Cropper
+  image_cropper: ^5.0.0 
+
+Step 2: config android / ios
+---
+
+สำหรับ image_picker
+----
+Android - No configuration required
+iOS config at <project root>/ios/Runner/Info.plist
+---	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Used to demonstrate image picker plugin</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Used to demonstrate image picker plugin</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Used to capture audio for image picker plugin</string>
+---
+
+สำหรับ image_cropper
+---
+Android Add UCropActivity into your AndroidManifest.xml
+---
+<activity
+    android:name="com.yalantis.ucrop.UCropActivity"
+    android:screenOrientation="portrait"
+    android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+---
+
+iOS - No configuration required
+
+Step 3: อัพเดท rest_api.dart เพิ่มส่วนการ Create Product API Method
+---
+  // Create Product API Method -------------------------------------------------
+  Future<String> addProductAPI(ProductModel product, {File? imageFile}) async {
+    FormData data = FormData.fromMap({
+      'name': product.name,
+      'description': product.description,
+      'barcode': product.barcode,
+      'stock': product.stock,
+      'price': product.price,
+      'category_id': product.categoryId,
+      'user_id': product.userId,
+      'status_id': product.statusId,
+      if (imageFile != null)
+        'photo': await MultipartFile.fromFile(
+          imageFile.path,
+          contentType: MediaType('image', 'jpg'),
+        ),
+    });
+
+    final response = await _dioWithAuth.post('products', data: data);
+    if (response.statusCode == 200) {
+      Utility().logger.d(response.data);
+      return jsonEncode(response.data);
+    }
+    throw Exception('Failed to create product');
+  }
+  // ---------------------------------------------------------------------------
+
+Step 4: สร้างไฟล์ product_add.dart สำหรับเพิ่มสินค้าที่ lib/screens/products/product_add.dart
+---
+class AppRouter {
+.
+static const String productAdd = 'productAdd';
+.
+static get routes => {
+.
+productAdd: (context) => const ProductAddScreen(),
+};
+
+Step 5: เพิ่มลิงก์ Navigate จากหน้า home_screen.dart ไปยัง product_add.dart
+---
+actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.pushNamed(context, AppRouter.productAdd);
+            },
+            icon: const Icon(Icons.add),
+          )
+        ],
+
+Step 6: อัพเดทเพิ่มฟอร์มหน้า product_add.dart
+---
+
+
+
+

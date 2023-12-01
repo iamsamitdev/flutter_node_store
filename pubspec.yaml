@@ -51,6 +51,15 @@ dependencies:
   # dio
   dio: ^5.3.0
 
+  # http parser
+  http_parser: ^4.0.2
+
+  # Image Picker
+  image_picker: ^1.0.1
+
+  # Image Cropper
+  image_cropper: ^5.0.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

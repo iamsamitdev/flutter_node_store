@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_node_store/app_router.dart';
 import 'package:flutter_node_store/models/product_model.dart';
 import 'package:flutter_node_store/screens/products/components/product_item.dart';
 import 'package:flutter_node_store/services/rest_api.dart';
@@ -31,10 +32,11 @@ class _HomeScreenState extends State<HomeScreen> {
         title: const Text('สินค้า'),
         actions: [
           IconButton(
-              onPressed: () {
-                //
-              },
-              icon: const Icon(Icons.add))
+            onPressed: () {
+              Navigator.pushNamed(context, AppRouter.productAdd);
+            },
+            icon: const Icon(Icons.add),
+          )
         ],
       ),
       body: FutureBuilder(
@@ -64,17 +66,17 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _gridView(List<ProductModel> products) {
     return GridView.builder(
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2 // จำนวนคอลัมน์
-          ),
+        crossAxisCount: 2, // จำนวนคอลัมน์
+        crossAxisSpacing: 0,
+        mainAxisSpacing: 0,
+        mainAxisExtent: 200,
+      ),
       itemCount: products.length,
       itemBuilder: (context, index) {
-        return Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: ProductItem(
-            isGrid: true,
-            product: products[index],
-            onTap: () {},
-          ),
+        return ProductItem(
+          isGrid: true,
+          product: products[index],
+          onTap: () {},
         );
       },
     );
@@ -87,7 +89,7 @@ class _HomeScreenState extends State<HomeScreen> {
       itemCount: products.length,
       itemBuilder: (context, index) {
         return Padding(
-          padding: const EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
+          padding: const EdgeInsets.only(top: 4.0, left: 4.0, right: 4.0),
           child: SizedBox(
             height: 350,
             child: ProductItem(
