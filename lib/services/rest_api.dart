@@ -19,7 +19,7 @@ class CallAPI {
     } else {
       try {
         final response = await _dio.post('auth/register', data: data);
-        Utility().logger.d(response.data);
+        // Utility().logger.d(response.data);
         return jsonEncode(response.data);
       } catch (e) {
         Utility().logger.e(e);
@@ -36,7 +36,7 @@ class CallAPI {
     } else {
       try {
         final response = await _dio.post('auth/login', data: data);
-        Utility().logger.d(response.data);
+        // Utility().logger.d(response.data);
         return jsonEncode(response.data);
       } catch (e) {
         Utility().logger.e(e);
@@ -53,7 +53,7 @@ class CallAPI {
   Future<List<ProductModel>> getAllProducts() async {
     final response = await _dioWithAuth.get('products');
     if (response.statusCode == 200) {
-      Utility().logger.d(response.data);
+      // Utility().logger.d(response.data);
       final List<ProductModel> products = productModelFromJson(
         json.encode(response.data),
       );
@@ -83,7 +83,7 @@ class CallAPI {
 
     final response = await _dioWithAuth.post('products', data: data);
     if (response.statusCode == 200) {
-      Utility().logger.d(response.data);
+      // Utility().logger.d(response.data);
       return jsonEncode(response.data);
     }
     throw Exception('Failed to create product');
@@ -94,7 +94,7 @@ class CallAPI {
   Future<String> deleteProductAPI(int id) async {
     final response = await _dioWithAuth.delete('products/$id');
     if(response.statusCode == 200){
-      Utility().logger.d(response.data);
+      // Utility().logger.d(response.data);
       return jsonEncode(response.data);
     }
     throw Exception('Failed to delete product');
@@ -123,7 +123,7 @@ class CallAPI {
 
       final response = await _dioWithAuth.put('products/${product.id}', data: data);
       if(response.statusCode == 200){
-        Utility().logger.d(response.data);
+        // Utility().logger.d(response.data);
         return jsonEncode(response.data);
       }
       throw Exception('Failed to update product');

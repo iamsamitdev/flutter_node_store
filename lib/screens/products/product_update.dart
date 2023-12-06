@@ -2,10 +2,12 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_node_store/components/image_not_found.dart';
 import 'package:flutter_node_store/models/product_model.dart';
 import 'package:flutter_node_store/screens/bottomnavpage/home_screen.dart';
 import 'package:flutter_node_store/screens/products/components/product_form.dart';
 import 'package:flutter_node_store/services/rest_api.dart';
+import 'package:flutter_node_store/utils/constants.dart';
 
 class ProductUpdate extends StatefulWidget {
   const ProductUpdate({super.key});
@@ -94,12 +96,39 @@ class _ProductUpdateState extends State<ProductUpdate> {
       body: SingleChildScrollView(
         child: Column(
           children: [
+            SizedBox(
+              width: double.infinity,
+              height: 300,
+              child: arguments['products']['image'] != null && arguments['products']['image'].isNotEmpty ? _image(arguments['products']['image']) : const ImageNotFound(),
+            ),
             ProductForm(
               _product, 
               callBackSetImage: _callBackSetImage, 
               formKey: _formKeyUpdateProduct
-            )
+            ),
           ],
+        ),
+      ),
+    );
+  }
+
+  // _image Widget
+  Container _image(String image){
+    String imageUrl;
+    if(image.contains('://')){
+      imageUrl = image;
+    }else{
+      imageUrl = '$baseURLImage$image';
+    }
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(5),
+          topRight: Radius.circular(5),
+        ),
+        image: DecorationImage(
+          image: NetworkImage(imageUrl),
+          fit: BoxFit.cover,
         ),
       ),
     );

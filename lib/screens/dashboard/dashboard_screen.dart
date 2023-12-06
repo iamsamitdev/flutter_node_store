@@ -9,7 +9,7 @@ import 'package:flutter_node_store/screens/bottomnavpage/report_screen.dart';
 import 'package:flutter_node_store/screens/bottomnavpage/setting_screen.dart';
 import 'package:flutter_node_store/themes/colors.dart';
 import 'package:flutter_node_store/utils/utility.dart';
-// import 'package:flutter_node_store/themes/colors.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -87,13 +87,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
         title: Text(_title),
       ),
       drawer: Drawer(
-        // backgroundColor: primary,
+        backgroundColor: primary,
         child: Column(
           children: [
             ListView(
               shrinkWrap: true,
               children: [
                 UserAccountsDrawerHeader(
+                  margin: EdgeInsets.only(bottom: 0.0),
                   accountName: Text('Samit Koyom'),
                   accountEmail: Text('samit@email.com'),
                   currentAccountPicture: CircleAvatar(
@@ -107,22 +108,36 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   ],
                 ),
                 ListTile(
-                  leading: Icon(Icons.info_outline),
-                  title: Text('Info'),
+                  leading: Icon(Icons.timer_outlined, color: icons,),
+                  title: Text('Counter (With Stateful)', style: TextStyle(color: icons,),),
+                  onTap: () {
+                    Navigator.pushNamed(context, AppRouter.counterStateful);
+                  },
+                ),
+                ListTile(
+                  leading: Icon(Icons.timer_outlined, color: icons,),
+                  title: Text('Counter (With Provider)', style: TextStyle(color: icons,),),
+                  onTap: () {
+                    Navigator.pushNamed(context, AppRouter.counterProvider);
+                  },
+                ),
+                ListTile(
+                  leading: Icon(Icons.info_outline, color: icons,),
+                  title: Text('Info',style: TextStyle(color: icons,),),
                   onTap: () {
                     Navigator.pushNamed(context, AppRouter.info);
                   },
                 ),
                 ListTile(
-                  leading: Icon(Icons.person_outline),
-                  title: Text('About'),
+                  leading: Icon(Icons.person_outline, color: icons,),
+                  title: Text('About', style: TextStyle(color: icons,),),
                   onTap: () {
                     Navigator.pushNamed(context, AppRouter.about);
                   },
                 ),
                 ListTile(
-                  leading: Icon(Icons.email_outlined),
-                  title: Text('Contact'),
+                  leading: Icon(Icons.email_outlined, color: icons,),
+                  title: Text('Contact', style: TextStyle(color: icons,),),
                   onTap: () {
                     Navigator.pushNamed(context, AppRouter.contact);
                   },
@@ -134,8 +149,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   ListTile(
-                    leading: Icon(Icons.exit_to_app_outlined),
-                    title: Text('Logout'),
+                    leading: Icon(Icons.exit_to_app_outlined, color: icons,),
+                    title: Text('Logout', style: TextStyle(color: icons,),),
                     onTap: _logout,
                   ),
                 ],
@@ -157,23 +172,23 @@ class _DashboardScreenState extends State<DashboardScreen> {
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home_outlined),
-            label: 'Home',
+            label: AppLocalizations.of(context)!.menu_home,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.bar_chart_outlined),
-            label: 'Report',
+            label: AppLocalizations.of(context)!.menu_report,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.notifications_outlined),
-            label: 'Notification',
+            label: AppLocalizations.of(context)!.menu_notification,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings_outlined),
-            label: 'Setting',
+            label: AppLocalizations.of(context)!.menu_setting,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person_outline),
-            label: 'Profile',
+            label: AppLocalizations.of(context)!.menu_profile,
           ),
         ]
       ),
