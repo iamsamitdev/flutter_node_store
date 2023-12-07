@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_node_store/utils/utility.dart';
 
 class LocaleProvider extends ChangeNotifier {
 
@@ -12,6 +13,10 @@ class LocaleProvider extends ChangeNotifier {
 
   // Change Locale
   void changeLocale(Locale newLocale) async {
+
+    // Save new locale to shared preference
+    await Utility.setSharedPreference('languageCode', newLocale.languageCode);
+
     _locale = newLocale;
     notifyListeners();
   }

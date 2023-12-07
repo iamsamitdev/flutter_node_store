@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_node_store/app_router.dart';
 import 'package:flutter_node_store/providers/counter_provider.dart';
 import 'package:flutter_node_store/providers/locale_provider.dart';
+import 'package:flutter_node_store/providers/theme_provider.dart';
 import 'package:flutter_node_store/providers/timer_provider.dart';
 import 'package:flutter_node_store/themes/styles.dart';
 import 'package:flutter_node_store/utils/utility.dart';
@@ -12,6 +13,13 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // กำหนดตัวแปร initialRoute ให้กับ MaterialApp
 var initialRoute;
+
+// กำหนดตัวแปร locale ให้กับ Provider
+var locale;
+
+// กำหนดตัวแปร themeData, isDark ให้กับ Provider
+ThemeData? themeData;
+var isDark;
 
 void main() async {
   // Test Logger
@@ -35,6 +43,14 @@ void main() async {
     initialRoute = AppRouter.welcome;
   }
 
+  // Set default locale from shared preference
+  String? languageCode = await Utility.getSharedPreference('languageCode');
+  locale = Locale(languageCode ?? 'en');
+
+  // Set default theme from SharedPreference
+  isDark = await Utility.getSharedPreference('isDark') ?? false;
+  themeData = isDark && isDark != null ? AppTheme.darkTheme : AppTheme.lightTheme;
+
   runApp(
     const MyApp(),
   );
@@ -54,16 +70,19 @@ class MyApp extends StatelessWidget {
           create: (_) => TimerProvider(),
         ),
         ChangeNotifierProvider(
-          create: (_) => LocaleProvider(
-            const Locale('en'),
-          ),
+          create: (_) => LocaleProvider(locale),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => ThemeProvider(
+            themeData!, isDark!,
+          )
         )
       ],
-      child: Consumer<LocaleProvider>(
-        builder: (context, locale, child) {
+      child: Consumer2<LocaleProvider, ThemeProvider>(
+        builder: (context, locale, theme, child) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
-            theme: AppTheme.lightTheme,
+            theme: theme.getTheme(),
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: AppLocalizations.supportedLocales,
             locale: locale.locale,

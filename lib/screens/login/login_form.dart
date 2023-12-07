@@ -128,7 +128,10 @@ class LoginForm extends StatelessWidget {
                             // บันทึกข้อมูลลงในตัวแปร SharedPreferences
                             await Utility.setSharedPreference('loginStatus', true);
                             await Utility.setSharedPreference('token', body["token"]);
-                            await Utility.setSharedPreference('user', body["user"]);
+                            // await Utility.setSharedPreference('user', body["user"]);
+                            await Utility.setSharedPreference('firstName', body["user"]["firstname"]);
+                            await Utility.setSharedPreference('lastName', body["user"]["lastname"]);
+                            await Utility.setSharedPreference('email', body["user"]["email"]);
 
                             // ส่งไปหน้า Dashboard
                             Navigator.pushReplacementNamed(context, AppRouter.dashboard);
