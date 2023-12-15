@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.ts",
   "scripts": {
-    "start": "nodemon server.ts",
+    "start": "node ./dist/server.js",
     "test": "nodemon test.ts",
     "build": "tsc",
     "knex:migrate:make": "knex --knexfile knexfile.ts -x ts migrate:make",
